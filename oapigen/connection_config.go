@@ -8,12 +8,16 @@ import (
 
 // Config is a go type to represent the plugin config.
 type Config struct {
+	Version   int      `cty:"version"`
 	Documents []string `cty:"documents" steampipe:"watch"`
 	Prefix    *string  `cty:"prefix"`
 }
 
 // ConfigSchema defines the config params for the oapigen plugin.
 var ConfigSchema = map[string]*schema.Attribute{
+	"version": {
+		Type: schema.TypeInt,
+	},
 	"documents": {
 		Type: schema.TypeList,
 		Elem: &schema.Attribute{Type: schema.TypeString},
@@ -23,7 +27,7 @@ var ConfigSchema = map[string]*schema.Attribute{
 	},
 }
 
-// ConfigInstance ...
+// ConfigInstance returns a Config pointer.
 func ConfigInstance() interface{} {
 	return &Config{}
 }
@@ -34,5 +38,8 @@ func GetConfig(connection *plugin.Connection) Config {
 		return Config{}
 	}
 	config, _ := connection.Config.(Config)
+	if config.Version == 0 {
+		config.Version = 3
+	}
 	return config
 }

@@ -47,15 +47,14 @@ func PluginTables(ctx context.Context, d *plugin.TableMapData) (map[string]*plug
 		docCtx := context.WithValue(ctx, keyPath, doc)
 		base := filepath.Base(doc)
 
-		tableData, err := tableCSV(docCtx, d.Connection)
+		tableDefs, err := tableOpenAPI(docCtx, base, d.Connection)
 		if err != nil {
-			plugin.Logger(ctx).Error("oapigen.PluginTables", "create_table_error", err, "path", i)
+			plugin.Logger(ctx).Error("oapigen.PluginTables", "define_table_error", err, "doc", doc)
 			return nil, err
 		}
 
-		// Skip the table if the file is empty
-		if tableData != nil {
-			tables[base[0:len(base)-len(filepath.Ext(base))]] = tableData
+		for _, tableDef := range tableDefs {
+			tables[tableDef.Name] = tableDef
 		}
 	}
 
