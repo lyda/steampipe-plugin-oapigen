@@ -1,4 +1,8 @@
-![image](https://hub.steampipe.io/images/plugins/lyda/oapigen-social-graphic.png)
+```
+    OpenAPI -> [generate tables + generate requests]
+                        +
+    Steampipe
+```
 
 # OAPIGen Plugin for Steampipe
 
