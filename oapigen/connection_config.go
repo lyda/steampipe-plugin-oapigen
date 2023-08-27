@@ -16,14 +16,17 @@ type Config struct {
 // ConfigSchema defines the config params for the oapigen plugin.
 var ConfigSchema = map[string]*schema.Attribute{
 	"version": {
-		Type: schema.TypeInt,
+		Type:     schema.TypeInt,
+		Required: true,
 	},
 	"documents": {
-		Type: schema.TypeList,
-		Elem: &schema.Attribute{Type: schema.TypeString},
+		Type:     schema.TypeList,
+		Elem:     &schema.Attribute{Type: schema.TypeString},
+		Required: true,
 	},
 	"prefix": {
-		Type: schema.TypeString,
+		Type:     schema.TypeString,
+		Required: true,
 	},
 }
 
@@ -38,8 +41,5 @@ func GetConfig(connection *plugin.Connection) Config {
 		return Config{}
 	}
 	config, _ := connection.Config.(Config)
-	if config.Version == 0 {
-		config.Version = 3
-	}
 	return config
 }
